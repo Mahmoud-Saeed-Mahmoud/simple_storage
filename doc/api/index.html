@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="simple_storage API docs, for the Dart programming language.">
+  <title>simple_storage - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="https://mahmoud-saeed-mahmoud.github.io/simple_storage">simple_storage package</a></li>
+  </ol>
+  <div class="self-name">simple_storage</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button" title="Toggle brightness">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        dark_mode
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        light_mode
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="dart-nosql-database">Dart NoSQL Database</h1>
+<p>A simple, lightweight NoSQL database written in pure Dart, designed for educational purposes and exploring the fundamentals of database development. This project demonstrates concepts like concurrency control, indexing, pagination, transactions, and TTL.</p>
+<h2 id="features">Features</h2>
+<ul>
+<li><strong>Collections:</strong> Organize data into named collections, similar to tables in a relational database.</li>
+<li><strong>Key-Value Storage:</strong> Store data as key-value pairs, allowing flexibility in your data structure.</li>
+<li><strong>Concurrency Control:</strong> Uses the <code>synchronized</code> library for thread-safe access to data, with locks.</li>
+<li><strong>Indexing:</strong> Supports in-memory indexing on specified fields for faster lookups.</li>
+<li><strong>Pagination:</strong> Fetch data in chunks using <code>limit</code> and <code>offset</code> to improve performance.</li>
+<li><strong>Transactions:</strong> Ensures atomic operations by grouping multiple changes within a transaction scope using a lock.</li>
+<li><strong>TTL (Time-To-Live):</strong> Allows setting an expiry time for data, ideal for caching and temporary data management.</li>
+<li><strong>Pure Dart:</strong> Built entirely in Dart, making it easy to understand and modify.</li>
+<li><strong>File Persistence:</strong> Stores all data in JSON files, with a clear and well-defined structure.</li>
+</ul>
+<h2 id="getting-started">Getting Started</h2>
+<ol>
+<li>
+<p><strong>Add the <code>synchronized</code> dependency:</strong></p>
+<pre class="language-bash"><code class="language-bash">flutter pub add synchronized
+</code></pre>
+</li>
+<li>
+<p><strong>Import:</strong></p>
+<pre class="language-dart"><code class="language-dart">import 'package:synchronized/synchronized.dart';
+</code></pre>
+</li>
+<li>
+<p><strong>Create a Database Instance:</strong></p>
+<pre class="language-dart"><code class="language-dart">final db = Database('./my_database'); // Specify the storage path
+</code></pre>
+<ul>
+<li>The constructor argument specifies the directory where your database files will be stored.</li>
+</ul>
+</li>
+<li>
+<p><strong>Create or Access a Collection:</strong></p>
+<pre class="language-dart"><code class="language-dart">final users = await db.collection('users', indexes: ['age', 'name']);
+</code></pre>
+<ul>
+<li>The first argument is the name of the collection. If a collection with that name doesn't exist it will be created.</li>
+<li>The optional <code>indexes</code> parameter is a <code>List&lt;String&gt;</code> of properties that should be indexed. Indexing can speed up lookups based on these properties but can also slow down insertions if used too much.</li>
+</ul>
+</li>
+<li>
+<p><strong>Store Data (with optional TTL):</strong></p>
+<pre class="language-dart"><code class="language-dart">await users.put('1', {'name': 'Alice', 'age': 30}, ttl: Duration(seconds: 60));
+</code></pre>
+<ul>
+<li>Use the <code>put</code> method to store data using a key and a value.</li>
+<li>The optional <code>ttl</code> parameter specifies a time-to-live for the data. After that time, the data will be removed when loading from disk, or when accessing using <code>get</code> or <code>getAll</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Retrieve Data:</strong></p>
+<pre class="language-dart"><code class="language-dart">// By key
+final user = await users.get(key: '1');
+print('User by key: $user');
+
+// By index
+final usersByAge = await users.get(key: 'age', value: 30);
+print('Users by age: $usersByAge');
+</code></pre>
+<ul>
+<li>Use the <code>get</code> method to retrieve data using a key.</li>
+<li>If you use the <code>key</code> parameter as a field that has been indexed you should also provide the <code>value</code> to filter the results.</li>
+</ul>
+</li>
+<li>
+<p><strong>Retrieve Data with Pagination:</strong></p>
+<pre class="language-dart"><code class="language-dart">final pagedUsers = await users.getAll(limit: 10, offset: 0);
+print('Paged users (limit 10, offset 0): ${pagedUsers.length}');
+final allUsers = await users.getAll();
+print('Total number of users: ${allUsers.length}');
+</code></pre>
+<ul>
+<li>Use <code>getAll</code> with <code>limit</code> and <code>offset</code> to get data in pages.</li>
+<li>The <code>limit</code> specifies the maximum amount of data returned, and the <code>offset</code> specifies which entry is the start of the page.</li>
+<li>You can use the total number of users to create pagination controls.</li>
+</ul>
+</li>
+<li>
+<p><strong>Perform Operations Inside a Transaction:</strong></p>
+<pre class="language-dart"><code class="language-dart">final tx = await users.startTransaction();
+await tx.put('1', {'name': 'Alice Updated', 'age': 31});
+await tx.delete('2');
+await tx.commit();
+</code></pre>
+<ul>
+<li>Transactions help group operations in one action that can be committed or rolled back if one of the operations fails.</li>
+</ul>
+</li>
+<li>
+<p><strong>Handle Errors:</strong></p>
+<p>The application throws specific errors:</p>
+<ul>
+<li><code>DatabaseCreateException</code>: when the database fails to create the storage directory.</li>
+<li><code>CollectionLoadException</code>: when a collection fails to load from the disk.</li>
+<li><code>CollectionSaveException</code>: when a collection fails to save to disk.</li>
+<li><code>CollectionNotFoundException</code>: when a collection is not found.</li>
+</ul>
+<p>These exceptions should be caught by the application to handle specific error cases. For example:</p>
+<pre class="language-dart"><code class="language-dart">try {
+    // your code here
+} on DatabaseCreateException catch (e) {
+    print("Database creation failed ${e.toString()}");
+} on CollectionLoadException catch (e) {
+    print('Error loading collection: ${e.toString()}');
+} on CollectionSaveException catch (e) {
+    print('Error saving collection: ${e.toString()}');
+} on CollectionNotFoundException catch (e) {
+    print("Collection not found: ${e.toString()}");
+} catch (e) {
+    print('An unexpected error occurred: $e');
+}
+</code></pre>
+</li>
+</ol>
+<h2 id="core-classes">Core Classes</h2>
+<ul>
+<li>
+<p><strong><code>Database</code>:</strong></p>
+<ul>
+<li>Manages the storage path and access to collections.</li>
+<li>The <code>collection</code> method returns a collection for a specific name.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>Collection</code>:</strong></p>
+<ul>
+<li>Represents a data collection and stores data as key-value pairs, with the optional <code>ttl</code>.</li>
+<li>Methods to <code>put</code>, <code>get</code>, <code>getAll</code>, and <code>delete</code> data.</li>
+<li>Manages indexing for faster lookups based on the specified fields.</li>
+<li>Manages pagination for retrieving the data in chunks.</li>
+<li>Provides transaction capabilities using the <code>startTransaction</code> method.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>Transaction</code>:</strong></p>
+<ul>
+<li>Manages a transaction's state, to perform a series of operations atomically using locks.</li>
+<li>Has methods <code>put</code>, <code>delete</code>, <code>commit</code> and <code>rollback</code> to manage the transaction.</li>
+</ul>
+</li>
+</ul>
+<h2 id="error-handling">Error Handling</h2>
+<p>The database uses custom exception classes for clear and detailed error reporting:</p>
+<ul>
+<li><code>DatabaseCreateException</code></li>
+<li><code>CollectionLoadException</code></li>
+<li><code>CollectionSaveException</code></li>
+<li><code>CollectionNotFoundException</code></li>
+</ul>
+<p>These exceptions provide specific error messages, which you can use to provide feedback to your user, and to help debug.</p>
+<h2 id="contributions">Contributions</h2>
+<p>Contributions are welcome! If you have ideas for enhancements or find any bugs, please feel free to:</p>
+<ol>
+<li>Fork the repository.</li>
+<li>Create a new branch for your feature or bug fix.</li>
+<li>Submit a pull request with your changes.</li>
+</ol>
+<h2 id="limitations">Limitations</h2>
+<p>This project is intended for educational purposes and has a few limitations:</p>
+<ul>
+<li>It is not a full-featured database.</li>
+<li>Indexes are stored in memory and might slow down the application with a large number of indexed fields or with big datasets.</li>
+<li>There is no support for complex queries or different types of storage formats.</li>
+<li>Transactions have a simple locking mechanism that might block operations.</li>
+<li>There is no scheduling for the TTL cleanup that will only happen when reading or retrieving all data.</li>
+<li>The code has not been thoroughly tested and might have edge cases.</li>
+</ul>
+<h2 id="license">License</h2>
+<p>This project is licensed under the MIT License - see the <a href="LICENSE">LICENSE</a> file for details.</p>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="simple_storage">
+  <span class="name"><a href="simple_storage/simple_storage-library.html">simple_storage</a></span> 
+
+</dt>
+<dd>A library for storing and retrieving data in a key-value store.
+</dd>
+
+        </dl>
+      </section>
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="https://mahmoud-saeed-mahmoud.github.io/simple_storage">simple_storage package</a></li>
+</ol>
+
+    <h5 class="hidden-xs"><span class="package-name">simple_storage</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="simple_storage/simple_storage-library.html">simple_storage</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+</main>
+<footer>
+  <span class="no-break">
+    simple_storage
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

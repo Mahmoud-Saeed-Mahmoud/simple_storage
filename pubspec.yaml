@@ -1,0 +1,15 @@
+name: simple_storage
+description: A simple persistent key value storage library for dart. Provide basic functionality for storing and retrieving data. Supports TTL and transactions.
+version: 1.0.0
+repository: https://github.com/Mahmoud-Saeed-Mahmoud/simple_storage
+homepage: https://mahmoud-saeed-mahmoud.github.io/simple_storage
+
+environment:
+  sdk: ^3.6.0
+
+# Add regular dependencies here.
+dependencies:
+  synchronized: ^3.3.0+3
+
+dev_dependencies:
+  lints: ^5.0.0
