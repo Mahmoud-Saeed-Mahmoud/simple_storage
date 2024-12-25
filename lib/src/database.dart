@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'collection.dart';
 import 'exceptions.dart';
-import 'file_storage_adapter.dart'
-    if (dart.library.js) 'web_storage_adapter.dart';
+import 'file_storage_adapter.dart' if (dart.library.io) 'file_storage_adapter';
 import 'storage_adapter.dart';
+import 'web_storage_adapter.dart' if (dart.library.html) 'web_storage_adapter';
 
 /// A database that stores collections of key-value pairs in a storage
 /// directory. The collections are stored as files in the storage directory,
@@ -47,7 +47,7 @@ class Database {
 
   /// Creates the storage directory if it does not exist.
   void _createStorageDir() {
-    if (_storageAdapter is StorageAdapterImpl) {
+    if (_storageAdapter is FileStorageAdapter) {
       try {
         Directory(_storagePath).createSync(recursive: true);
       } on IOException catch (e) {
@@ -63,10 +63,9 @@ class Database {
   /// Otherwise, it returns a [WebStorageAdapter].
   static StorageAdapter _getDefaultStorageAdapter() {
     try {
-      return StorageAdapterImpl();
+      return FileStorageAdapter();
     } catch (e) {
-      throw DatabaseCreateException(
-          "Unknown error creating database: ${e.toString()}");
+      return WebStorageAdapter();
     }
   }
 }

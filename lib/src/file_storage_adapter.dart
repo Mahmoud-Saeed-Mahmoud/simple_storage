@@ -4,7 +4,7 @@ import 'dart:io';
 import 'storage_adapter.dart';
 
 /// A storage adapter that uses the file system to store data.
-class StorageAdapterImpl implements StorageAdapter {
+class FileStorageAdapter implements StorageAdapter {
   /// Checks if a file exists at the given path.
   @override
   Future<bool> exists(String path) async {

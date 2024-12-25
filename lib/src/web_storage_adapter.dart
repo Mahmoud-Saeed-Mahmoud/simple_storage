@@ -4,7 +4,7 @@ import 'dart:html';
 import 'storage_adapter.dart';
 
 /// A storage adapter that stores data in the browser's local storage.
-class StorageAdapterImpl implements StorageAdapter {
+class WebStorageAdapter implements StorageAdapter {
   @override
 
   /// Checks if a key exists in the browser's local storage.

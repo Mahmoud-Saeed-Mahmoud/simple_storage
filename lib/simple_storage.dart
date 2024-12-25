@@ -23,7 +23,7 @@ library;
 export 'src/collection.dart';
 export 'src/database.dart';
 export 'src/exceptions.dart';
-export 'src/file_storage_adapter.dart'
-    if (dart.library.html) 'src/web_storage_adapter.dart';
+export 'src/file_storage_adapter.dart';
 export 'src/storage_adapter.dart';
 export 'src/transaction.dart';
+export 'src/web_storage_adapter.dart';
