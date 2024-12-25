@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'collection.dart';
 import 'exceptions.dart';
-import 'file_storage_adapter.dart' if (dart.library.io) 'file_storage_adapter';
+import 'file_storage_adapter.dart';
 import 'storage_adapter.dart';
-import 'web_storage_adapter.dart' if (dart.library.html) 'web_storage_adapter';
+import 'web_storage_adapter.dart';
 
 /// A database that stores collections of key-value pairs in a storage
 /// directory. The collections are stored as files in the storage directory,
