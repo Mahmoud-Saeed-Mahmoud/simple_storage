@@ -1,10 +1,9 @@
-import 'dart:io';
-
 import 'collection.dart';
 import 'exceptions.dart';
-import 'file_storage_adapter.dart';
+import 'platform_storage_stup.dart'
+    if (dart.library.html) 'web_storage_adapter.dart'
+    if (dart.library.io) 'file_storage_adapter.dart';
 import 'storage_adapter.dart';
-import 'web_storage_adapter.dart';
 
 /// A database that stores collections of key-value pairs in a storage
 /// directory. The collections are stored as files in the storage directory,
@@ -26,12 +25,10 @@ class Database {
   final StorageAdapter _storageAdapter;
 
   /// Creates a new [Database] with the given storage path and storage adapter.
-  /// If the storage adapter is not provided, it defaults to a [FileStorageAdapter]
-  /// if `dart:io` is available, and a [WebStorageAdapter] otherwise.
+  /// If the storage adapter is not provided, it defaults to a [StorageAdapterImpl]
+  /// if `dart:io` is available, and a [StorageAdapterImpl] otherwise.
   Database(this._storagePath, {StorageAdapter? storageAdapter})
-      : _storageAdapter = storageAdapter ?? _getDefaultStorageAdapter() {
-    _createStorageDir();
-  }
+      : _storageAdapter = StorageAdapterImpl();
 
   /// Returns a [Future] that completes with a [Collection] with the given name.
   /// If the collection does not exist, it is created.
@@ -43,29 +40,5 @@ class Database {
       throw CollectionNotFoundException('Collection $name was not created');
     }
     return _collections[name]!;
-  }
-
-  /// Creates the storage directory if it does not exist.
-  void _createStorageDir() {
-    if (_storageAdapter is FileStorageAdapter) {
-      try {
-        Directory(_storagePath).createSync(recursive: true);
-      } on IOException catch (e) {
-        throw DatabaseCreateException("Failed to create storage directory $e");
-      } catch (e) {
-        _getDefaultStorageAdapter();
-      }
-    }
-  }
-
-  /// Returns the default storage adapter based on the platform.
-  /// If `dart:io` is available, it returns a [FileStorageAdapter].
-  /// Otherwise, it returns a [WebStorageAdapter].
-  static StorageAdapter _getDefaultStorageAdapter() {
-    try {
-      return FileStorageAdapter();
-    } catch (e) {
-      return WebStorageAdapter();
-    }
   }
 }

@@ -9,3 +9,7 @@
 ## 1.1.1
 
 - Removed conditional imports.
+
+## 1.1.2
+
+- Fixed platform support for web.
