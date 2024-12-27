@@ -13,3 +13,7 @@
 ## 1.1.2
 
 - Fixed platform support for web.
+
+# 1.1.2+1
+
+- Updated readme.

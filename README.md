@@ -46,51 +46,19 @@ A simple, lightweight NoSQL database written in pure Dart, designed for educatio
     *   The optional `indexes` parameter is a `List<String>` of properties that should be indexed. Indexing can speed up lookups based on these properties but can also slow down insertions if used too much.
 
 5.  **Store Data (with optional TTL):**
-
-    ```dart
-    await users.put('1', {'name': 'Alice', 'age': 30}, ttl: Duration(seconds: 60));
-    ```
-
     *   Use the `put` method to store data using a key and a value.
     *   The optional `ttl` parameter specifies a time-to-live for the data. After that time, the data will be removed when loading from disk, or when accessing using `get` or `getAll`.
 
 6.  **Retrieve Data:**
-
-    ```dart
-    // By key
-    final user = await users.get(key: '1');
-    print('User by key: $user');
-
-    // By index
-    final usersByAge = await users.get(key: 'age', value: 30);
-    print('Users by age: $usersByAge');
-    ```
-
     *   Use the `get` method to retrieve data using a key.
     *   If you use the `key` parameter as a field that has been indexed you should also provide the `value` to filter the results.
 
 7.  **Retrieve Data with Pagination:**
-
-    ```dart
-    final pagedUsers = await users.getAll(limit: 10, offset: 0);
-    print('Paged users (limit 10, offset 0): ${pagedUsers.length}');
-    final allUsers = await users.getAll();
-    print('Total number of users: ${allUsers.length}');
-    ```
-
     *   Use `getAll` with `limit` and `offset` to get data in pages.
     *   The `limit` specifies the maximum amount of data returned, and the `offset` specifies which entry is the start of the page.
     *   You can use the total number of users to create pagination controls.
 
 8.  **Perform Operations Inside a Transaction:**
-
-    ```dart
-    final tx = await users.startTransaction();
-    await tx.put('1', {'name': 'Alice Updated', 'age': 31});
-    await tx.delete('2');
-    await tx.commit();
-    ```
-
     *   Transactions help group operations in one action that can be committed or rolled back if one of the operations fails.
 
 9.  **Handle Errors:**
@@ -102,23 +70,7 @@ A simple, lightweight NoSQL database written in pure Dart, designed for educatio
     *   `CollectionSaveException`: when a collection fails to save to disk.
     *   `CollectionNotFoundException`: when a collection is not found.
 
-    These exceptions should be caught by the application to handle specific error cases. For example:
-
-    ```dart
-    try {
-        // your code here
-    } on DatabaseCreateException catch (e) {
-        print("Database creation failed ${e.toString()}");
-    } on CollectionLoadException catch (e) {
-        print('Error loading collection: ${e.toString()}');
-    } on CollectionSaveException catch (e) {
-        print('Error saving collection: ${e.toString()}');
-    } on CollectionNotFoundException catch (e) {
-        print("Collection not found: ${e.toString()}");
-    } catch (e) {
-        print('An unexpected error occurred: $e');
-    }
-    ```
+    These exceptions should be caught by the application to handle specific error cases.
 
 ## Core Classes
 
