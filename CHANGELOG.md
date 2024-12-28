@@ -17,3 +17,7 @@
 # 1.1.2+1
 
 - Updated readme.
+
+# 1.1.2+2
+
+- Updated readme.

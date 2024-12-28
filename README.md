@@ -16,16 +16,16 @@ A simple, lightweight NoSQL database written in pure Dart, designed for educatio
 
 ## Getting Started
 
-1.  **Add the `synchronized` dependency:**
+1.  **Add the `simple_storage` dependency:**
 
     ```bash
-    flutter pub add synchronized
+    flutter pub add simple_storage
     ```
 
 2.  **Import:**
 
     ```dart
-    import 'package:synchronized/synchronized.dart';
+    import 'package:simple_storage/simple_storage.dart';
     ```
 
 3.  **Create a Database Instance:**
