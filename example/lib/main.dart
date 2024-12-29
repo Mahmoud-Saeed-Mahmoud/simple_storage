@@ -16,33 +16,57 @@ Future<void> main() async {
     final dbPath = './database';
     final db = Database(dbPath);
 
-    final users = await db.collection('users');
+    final collection = await db.collection('test');
 
-    final tasks = <Future>[];
+    await collection.put('int', 10);
+    await collection.put('double', 10.5);
+    await collection.put('bool', true);
+    await collection.put('string', 'hello world');
+    await collection.put('map', {"key": "value"});
 
-    for (var i = 0; i < 10; i++) {
-      tasks.add((() async {
-        try {
-          await users.put('$i', {'name': 'User $i', 'age': i},
-              ttl: Duration(seconds: 5));
-          print('User $i added with ttl');
-          await Future.delayed(Duration(milliseconds: 500));
-        } catch (e) {
-          print("Error adding user: $e");
-        }
-      })());
-    }
-    await Future.wait(tasks);
+    var intValue = await collection.get(key: 'int');
+    var doubleValue = await collection.get(key: 'double');
+    var boolValue = await collection.get(key: 'bool');
+    var stringValue = await collection.get(key: 'string');
+    var mapValue = await collection.get(key: 'map');
 
-    await Future.delayed(Duration(seconds: 5));
+    debugPrint('int: $intValue type: ${intValue.runtimeType}');
+    debugPrint('double: $doubleValue type: ${doubleValue.runtimeType}');
+    debugPrint('bool: $boolValue type: ${boolValue.runtimeType}');
+    debugPrint('string: $stringValue type: ${stringValue.runtimeType}');
+    debugPrint('map: $mapValue type: ${mapValue.runtimeType}');
 
-    final allUsers3 = await users.getAll();
-    print('All users (after all TTL): ${allUsers3.length}');
+    var listAllValues = await collection.getAll();
+    debugPrint(
+        'listAllValues: $listAllValues type: ${listAllValues.runtimeType}');
 
-    for (var i = 0; i < 10; i++) {
-      final user = await users.get(key: '$i');
-      print("User $i (after all TTL): $user");
-    }
+    //   final users = await db.collection('users');
+
+    //   final tasks = <Future>[];
+
+    //   for (var i = 0; i < 10; i++) {
+    //     tasks.add((() async {
+    //       try {
+    //         await users.put('$i', {'name': 'User $i', 'age': i},
+    //             ttl: Duration(seconds: 5));
+    //         print('User $i added with ttl');
+    //         await Future.delayed(Duration(milliseconds: 500));
+    //       } catch (e) {
+    //         print("Error adding user: $e");
+    //       }
+    //     })());
+    //   }
+    //   await Future.wait(tasks);
+
+    //   await Future.delayed(Duration(seconds: 5));
+
+    //   final allUsers3 = await users.getAll();
+    //   print('All users (after all TTL): ${allUsers3.length}');
+
+    //   for (var i = 0; i < 10; i++) {
+    //     final user = await users.get(key: '$i');
+    //     print("User $i (after all TTL): $user");
+    //   }
   } on DatabaseCreateException catch (e) {
     print("Database creation failed ${e.toString()}");
   } on CollectionLoadException catch (e) {
