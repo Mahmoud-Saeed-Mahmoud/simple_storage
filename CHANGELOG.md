@@ -22,6 +22,6 @@
 
 - Updated readme.
 
-# 1.2.0-pre.1
+# 1.2.0
 
 - **BREAKING CHANGES:** `Collection` now supports dynamic values instead of `Map<String, dynamic>`.
