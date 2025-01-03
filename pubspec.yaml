@@ -5,7 +5,7 @@ repository: https://github.com/Mahmoud-Saeed-Mahmoud/simple_storage
 homepage: https://mahmoud-saeed-mahmoud.github.io/simple_storage
 
 environment:
-  sdk: ^3.6.0
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   synchronized: ^3.3.0+3
