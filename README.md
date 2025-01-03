@@ -1,6 +1,6 @@
 # Dart NoSQL Database
 
-A simple, lightweight NoSQL database written in pure Dart, designed for educational purposes and exploring the fundamentals of database development. This project demonstrates concepts like concurrency control, indexing, pagination, transactions, and TTL.
+A simple, lightweight NoSQL database written in pure Dart, with support for concurrency control, indexing, pagination, transactions, and TTL.
 
 ## Features
 
@@ -110,7 +110,6 @@ Contributions are welcome! If you have ideas for enhancements or find any bugs, 
 
 ## Limitations
 
-This project is intended for educational purposes and has a few limitations:
 
 *   It is not a full-featured database.
 *   Indexes are stored in memory and might slow down the application with a large number of indexed fields or with big datasets.
