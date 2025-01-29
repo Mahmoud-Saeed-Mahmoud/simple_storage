@@ -1,3 +1,5 @@
+// src/database.dart
+
 import 'collection.dart';
 import 'exceptions.dart';
 import 'platform_storage_stup.dart'
@@ -37,8 +39,26 @@ class Database {
       _collections[name] = Collection(name, _storagePath, _storageAdapter);
     }
     if (_collections[name] == null) {
-      throw CollectionNotFoundException('Collection $name was not created');
+      throw CollectionNotFoundException(
+          'Collection "$name" was not created'); // More descriptive message
     }
     return _collections[name]!;
+  }
+
+  /// Deletes a collection from the database.
+  ///
+  /// This removes the collection from the in-memory cache and potentially from the storage,
+  /// depending on the storage adapter implementation.
+  Future<void> deleteCollection(String name) async {
+    if (_collections.containsKey(name)) {
+      _collections.remove(name);
+      // For file-based storage, you might want to delete the file as well here if needed.
+      // However, for web storage, there might not be a direct file equivalent to delete.
+      // This part is storage adapter specific and might require adding a deleteCollection method to the StorageAdapter interface if needed.
+      print(
+          'Collection "$name" deleted from database.'); // Or use a logger for more robust logging
+    } else {
+      throw CollectionNotFoundException('Collection "$name" not found');
+    }
   }
 }
