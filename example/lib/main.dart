@@ -68,15 +68,15 @@ Future<void> main() async {
     //     print("User $i (after all TTL): $user");
     //   }
   } on DatabaseCreateException catch (e) {
-    print("Database creation failed ${e.toString()}");
+    debugPrint("Database creation failed ${e.toString()}");
   } on CollectionLoadException catch (e) {
-    print('Error loading collection: ${e.toString()}');
+    debugPrint('Error loading collection: ${e.toString()}');
   } on CollectionSaveException catch (e) {
-    print('Error saving collection: ${e.toString()}');
+    debugPrint('Error saving collection: ${e.toString()}');
   } on CollectionNotFoundException catch (e) {
-    print("Collection not found: ${e.toString()}");
+    debugPrint("Collection not found: ${e.toString()}");
   } catch (e) {
-    print('An unexpected error occurred: $e');
+    debugPrint('An unexpected error occurred: $e');
   }
 }
 

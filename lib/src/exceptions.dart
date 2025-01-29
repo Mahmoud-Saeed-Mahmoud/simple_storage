@@ -1,3 +1,5 @@
+// src/exceptions.dart
+
 // Custom Exception Classes
 /// Thrown when a collection fails to load from the disk.
 class CollectionLoadException implements Exception {
@@ -53,4 +55,16 @@ class DatabaseCreateException implements Exception {
 
   /// Returns a string representation of the exception.
   String toString() => 'DatabaseCreateException: $message';
+}
+
+/// Thrown when a transaction operation is attempted after the transaction has been committed or rolled back.
+class TransactionStateException implements Exception {
+  /// The message associated with the exception.
+  final String message;
+
+  /// Creates a new [TransactionStateException] with the given [message].
+  TransactionStateException(this.message);
+
+  @override
+  String toString() => 'TransactionStateException: $message';
 }
